@@ -1,40 +1,71 @@
-<% if flash[:notice] %>
-    <%= flash[:notice] %>
-<% end %>
+<%= render "users/error", model: @book %>
 
-<%= render "users/template" %>
+<div class = "container">
+    <div class = "row">
+        
+        <%= render "users/template" %>
 
+        <div class ="col-xs-9">
 
-<div class ="col-xs-9">
-
-    <table class = "table">
-        <thead>
-            <h2>Book detail</h2>
-        </thead>
-            <tbody>
-                <td>
-                    <%= attachment_image_tag @user, :profile_image, size: "40x40", fallback: "no_image.jpg"%><br>
-                    <%= link_to @user.name, user_path(@user.id), class: "link" %>
-                </td>
-                <td>
-                    <%= link_to @bookcreate.title, book_path(@bookcreate.id), class: "link" %>
-                </td>
-                <td>
-                    <%= @bookcreate.body %>
-                </td>
-                <% if @bookcreate.user == current_user %>
+            <table class = "table">
+                <thead>
+                    <h2>Book detail</h2>
+                </thead>
+                <tbody>
                     <td>
-                    <%= link_to edit_book_path(@bookcreate.id) do %>
-                        <button type="button" class="btn btn-success active">Edit</button>
+                        <%= attachment_image_tag @user, :profile_image, size: "40x40", fallback: "no_image.jpg"%><br>
+                        <%= link_to @user.name, user_path(@user.id), class: "link" %>
+                    </td>
+                    <td>
+                        <%= link_to @bookcreate.title, book_path(@bookcreate.id), class: "link" %>
+                    </td>
+                    <td>
+                        <%= @bookcreate.body %>
+                    </td>
+                    <% if @bookcreate.user == current_user %>
+                        <td>
+                            <%= link_to edit_book_path(@bookcreate.id) do %>
+                                <button type="button" class="btn btn-success active">Edit</button>
+                            <% end %>
+                        </td>
+                        <td>
+                            <%= link_to book_path(@bookcreate.id), method: :delete do %>
+                                <button type="button" class="btn btn-danger active">Destroy</button>
+                            <% end %>
+                        </td>
                     <% end %>
-                    </td>
-                    <td>
-                        <%= link_to book_path(@bookcreate.id), method: :delete do %>
-                            <button type="button" class="btn btn-danger active">Destroy</button>
-                        <% end %>
-                    </td>
-                <% end %>
-            </tbody>
-        </table>
+                </tbody>
+            </table>
+            <table class="table">
+                <thead>
+                    <h4>コメント一覧</h4>
+                    <h5><%= @comments.count %>件</h5>
+                </thead>
+                <tbody>
+                    <% @comments.each do |post_comment| %>
+                        <td>
+                            <%= link_to user_path(post_comment.id) do %>
+                                <%= attachment_image_tag post_comment.user, :profile_image, size: "40x40", fallback: "no_image.jpg" %>
+                            <% end %>
+                            <h4><%= post_comment.user.name %></h4>
+                        </td>
+                        <td><%= post_comment.comment %></td>
+                        <td><%= post_comment.created_at.strftime('%Y/%m/%d') %></td>
+                        <td><% if post_comment.user == current_user %>
+                                <%= link_to "削除", book_post_comment_path(post_comment.book.id, post_comment.id), method: :delete, class: "btn btn-danger pull-right" %>
+                            <% end %>
+                        </td>
+                    <% end %>
+                </tbody>
+            </table>
+            <div>
+                <div>
+                    <%= form_for [@bookcreate, @post_comment] do |f| %>
+                        <%= f.text_area :comment, rows:'5', class: "form-control",placeholder: "コメント" %>
+                        <%= f.submit "送信する", class: "btn btn-lg btn-base-1 mt-20 pull-right" %>
+                    <% end %>
+                <div>
+            </div>
+        </div>
     </div>
 </div>

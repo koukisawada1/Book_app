@@ -1,16 +1,6 @@
-<% if @user.errors.any? %>
-    <div class = "error">
-        <h2><%= @user.errors.count %>errors prohibited this obj from being saved:</h2>
-        <ul>
-            <% @user.errors.full_messages.each do |message| %>
-                <li><%= message %></li>
-            <% end %>
-        </ul>
-    </div>
-<% end %>
+<%= render "users/error", model: @user %>
 
 <div class = "container">
-
     <h2>User info</h2>
 
     <%= form_for(@user) do |f| %>

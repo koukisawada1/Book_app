@@ -17,19 +17,32 @@
                         <%= link_to @user.name, user_path(@user.id), class: "link" %>
                     </td>
                     <td>
-                        <%= link_to @bookcreate.title, book_path(@bookcreate.id), class: "link" %>
+                        <%= link_to @post_book.title, book_path(@post_book.id), class: "link" %>
                     </td>
                     <td>
-                        <%= @bookcreate.body %>
+                        <%= @post_book.body %>
                     </td>
-                    <% if @bookcreate.user == current_user %>
+                    <td>
+                        <% if @post_book.favorited_by?(current_user) %>
+                            <%= link_to book_favorites_path(@post_book.id), method: :delete do %>
+                                <span class="glyphicon glyphicon-thumbs-up" aria-hidden="true" style="color: tomato;"></span>
+                            <% end %>
+                        <% else %>
+                            <%= link_to book_favorites_path(@post_book.id), method: :post do %>
+                                <span class="glyphicon glyphicon-thumbs-up" aria-hidden="true"></span>
+                            <% end %>
+                        <% end %>
+                        <%= @post_book.favorites.count %>
+                    </td>
+
+                    <% if @post_book.user == current_user %>
                         <td>
-                            <%= link_to edit_book_path(@bookcreate.id) do %>
+                            <%= link_to edit_book_path(@post_book.id) do %>
                                 <button type="button" class="btn btn-success active">Edit</button>
                             <% end %>
                         </td>
                         <td>
-                            <%= link_to book_path(@bookcreate.id), method: :delete do %>
+                            <%= link_to book_path(@post_book.id), method: :delete do %>
                                 <button type="button" class="btn btn-danger active">Destroy</button>
                             <% end %>
                         </td>
@@ -60,7 +73,7 @@
             </table>
             <div>
                 <div>
-                    <%= form_for [@bookcreate, @post_comment] do |f| %>
+                    <%= form_for [@post_book, @post_comment] do |f| %>
                         <%= f.text_area :comment, rows:'5', class: "form-control",placeholder: "コメント" %>
                         <%= f.submit "送信する", class: "btn btn-lg btn-base-1 mt-20 pull-right" %>
                     <% end %>

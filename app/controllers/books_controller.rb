@@ -21,9 +21,9 @@ class BooksController < ApplicationController
     end
 
     def show
-        @bookcreate = Book.find(params[:id])
-        @user = @bookcreate.user
-        @comments = @bookcreate.post_comments
+        @post_book = Book.find(params[:id])
+        @user = @post_book.user
+        @comments = @post_book.post_comments
         @book = Book.new
         @books = Book.all
         @post_comment = PostComment.new
@@ -31,10 +31,8 @@ class BooksController < ApplicationController
 
     def edit
         @book = Book.find(params[:id])
-        if @book.user == current_user
-            render "edit"
-        else
-            redirect_to books_path
+        if @book.user != current_user
+            redirect_to books_path, notice: "不正なアクセスです"
         end
     end
 

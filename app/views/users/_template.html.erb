@@ -29,9 +29,9 @@
                 <div class = "row">
                     <%= form_for (@book) do |f| %>
                         <%= f.label :title %>
-                        <%= f.text_field :title, class: "width" %>
+                        <%= f.text_field :title, class: "width",placeholder: "タイトル" %>
                         <%= f.label :body, "Opinion" %>
-                        <%= f.text_area :body, class: "width" %>
+                        <%= f.text_area :body, class: "width",placeholder: "感想" %>
 
                         <%= f.submit 'Create Book', class: "btn btn-primary btn-block "  %>
                     <% end %>

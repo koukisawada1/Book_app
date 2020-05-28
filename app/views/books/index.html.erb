@@ -14,6 +14,7 @@
                         <th>Title</th>
                         <th>Opinion</th>
                         <th></th>
+                        <th></th>
                     </tr>
                 </thead>
                 <tbody>
@@ -27,7 +28,22 @@
                             </td>
                             <td><%= link_to book.title, book_path(book.id), class: "link" %></td>
                             <td><%= book.body %></td>
-                            <td><%= book.post_comments.count %></td>
+                            <td>
+                                <span class="glyphicon glyphicon-comment" aria-hidden="true"></span>
+                                <%= book.post_comments.count %>
+                            </td>
+                            <td>
+                                <% if book.favorited_by?(current_user) %>
+                                    <%= link_to book_favorites_path(book.id), method: :delete do %>
+                                        <span class="glyphicon glyphicon-thumbs-up" aria-hidden="true" style="color: tomato;"></span>
+                                    <% end %>
+                                <% else %>
+                                    <%= link_to book_favorites_path(book.id), method: :post do %>
+                                        <span class="glyphicon glyphicon-thumbs-up" aria-hidden="true"></span>
+                                    <% end %>
+                                <% end %>
+                                <%= book.favorites.count %>
+                            </td>
                         </tr>
                     <% end %>
                 </tbody>
